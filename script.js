@@ -23,11 +23,9 @@ class Tree {
       }
     }
 
-    if (value < currentRoot.value) {
-      currentRoot.leftChild = new Node(value);
-    } else if (value > currentRoot.value) {
-      currentRoot.rightChild = new Node(value);
-    }
+    value < currentRoot.value
+      ? (currentRoot.leftChild = new Node(value))
+      : (currentRoot.rightChild = new Node(value));
   }
 
   delete(value) {
@@ -36,11 +34,10 @@ class Tree {
     let previousRoot = null;
     while (value !== currentRoot.value && currentRoot !== null) {
       previousRoot = currentRoot;
-      if (value < currentRoot.value) {
-        currentRoot = currentRoot.leftChild;
-      } else if (value > currentRoot.value) {
-        currentRoot = currentRoot.rightChild;
-      }
+
+      value < currentRoot.value
+        ? (currentRoot = currentRoot.leftChild)
+        : (currentRoot = currentRoot.rightChild);
     }
 
     //2 children
@@ -70,6 +67,16 @@ class Tree {
         ? (previousRoot.leftChild = null)
         : (previousRoot.rightChild = null);
     }
+  }
+
+  find(value) {
+    let currentRoot = this.root;
+    while (value !== currentRoot.value) {
+      value < currentRoot.value
+        ? (currentRoot = currentRoot.leftChild)
+        : (currentRoot = currentRoot.rightChild);
+    }
+    console.log(currentRoot);
   }
 }
 
@@ -132,6 +139,6 @@ tree.insert(0);
 tree.insert(9);
 tree.insert(2.5);
 tree.insert(12);
-
 tree.delete(1);
 prettyPrint(tree.root);
+tree.find(3);
