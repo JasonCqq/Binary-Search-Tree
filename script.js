@@ -30,7 +30,47 @@ class Tree {
     }
   }
 
-  delete(value) {}
+  delete(value) {
+    //traverses through the tree and sets the currentRoot to the right root
+    let currentRoot = this.root;
+    let previousRoot = null;
+    while (value !== currentRoot.value && currentRoot !== null) {
+      previousRoot = currentRoot;
+      if (value < currentRoot.value) {
+        currentRoot = currentRoot.leftChild;
+      } else if (value > currentRoot.value) {
+        currentRoot = currentRoot.rightChild;
+      }
+    }
+
+    //2 children
+    if (currentRoot.leftChild !== null && currentRoot.rightChild !== null) {
+      let rootToReplace = currentRoot;
+      currentRoot = currentRoot.rightChild;
+      while (currentRoot.leftChild !== null) {
+        currentRoot = currentRoot.leftChild;
+      }
+      rootToReplace.value = currentRoot.value;
+      rootToReplace.rightChild = currentRoot.rightChild;
+
+      //1 children
+    } else if (
+      currentRoot.leftChild !== null ||
+      currentRoot.rightChild !== null
+    ) {
+      currentRoot.leftChild !== null
+        ? (previousRoot.leftChild = currentRoot.leftChild)
+        : (previousRoot.rightChild = currentRoot.rightChild);
+      //0 children
+    } else if (
+      currentRoot.leftChild === null &&
+      currentRoot.rightChild === null
+    ) {
+      currentRoot.value < previousRoot.value
+        ? (previousRoot.leftChild = null)
+        : (previousRoot.rightChild = null);
+    }
+  }
 }
 
 class Node {
@@ -41,6 +81,7 @@ class Node {
   }
 }
 
+//turns an array into a balanced BST
 function buildTree(array, start = 0, end = array.length - 1) {
   //turn it into a balanced binary tree full of Node objects appropriately placed
   //Node objects have (value, leftChild, rightChild);
@@ -86,10 +127,11 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 const testArray = [2, 2, 2, 1, 3, 5, 6, 2, 7, 5, 6];
 const tree = new Tree(testArray);
-
 tree.insert(4);
 tree.insert(0);
 tree.insert(9);
 tree.insert(2.5);
 tree.insert(12);
+
+tree.delete(1);
 prettyPrint(tree.root);
