@@ -71,7 +71,7 @@ class Tree {
         ? (currentRoot = currentRoot.leftChild)
         : (currentRoot = currentRoot.rightChild);
     }
-    console.log(currentRoot);
+    return currentRoot;
   }
 
   //all utilizes same helper function, nothing special.
@@ -112,15 +112,68 @@ class Tree {
     console.log(`Root: ${this.root.value}`);
   }
 
-  // height(node) {
-  //   let left = [];
-  //   let right = [];
-  //   while (node !== null) {
-  //     left.push(node.leftChild);
-  //     right.push(node.rightChild);
+  height(node) {
+    let nodeObject = this.find(node);
+    //checking which subtree is bigger/longer
+    let left;
+    let right;
+    if (nodeObject.leftChild === null && nodeObject.rightChild === null) {
+      return "This node has no children, Height: 0";
+    } else if (
+      nodeObject.leftChild === null &&
+      nodeObject.rightChild !== null
+    ) {
+      right = traverseTree(nodeObject.rightChild);
+      return `Root: ${nodeObject.value} \nHeight: ${right.length} Node(s) \nChain of Nodes: ${nodeObject.value},${right}`;
+    } else if (
+      nodeObject.rightChild === null &&
+      nodeObject.leftChild !== null
+    ) {
+      left = traverseTree(nodeObject.leftChild);
+      return `Root: ${nodeObject.value} \nHeight: ${left.length} Node(s) \nChain of Nodes: ${nodeObject.value},${left}`;
+    } else {
+      right = traverseTree(nodeObject.rightChild);
+      left = traverseTree(nodeObject.leftChild);
+    }
 
-  //   }
-  // }
+    let lessThan;
+    let moreThan;
+
+    //make sure to do case for equal
+    if (left && right && left.length === right.length) {
+      console.log(
+        `Heights of both trees are the same! \nRoot: ${nodeObject.value}\nHeight: ${left.length} Node(s)\nChain of Left: ${nodeObject.value},${left}\nChain of Right: ${nodeObject.value},${right}`
+      );
+    } else if (left && right && left.length < right.length) {
+      right.shift();
+      let rightRoot = nodeObject.rightChild;
+      lessThan = right.filter((num) => num < rightRoot.value);
+      moreThan = right.filter((num) => num > rightRoot.value);
+    } else if (left && right && left.length > right.length) {
+      left.shift();
+      let leftRoot = nodeObject.leftChild;
+      lessThan = left.filter((num) => num < leftRoot.value);
+      moreThan = left.filter((num) => num > leftRoot.value);
+    }
+
+    if (lessThan < moreThan) {
+      console.log(
+        `Root: ${nodeObject.value} \nHeight: ${
+          moreThan.length + 1
+        } Node(s) \nChain of Nodes: ${nodeObject.value},${
+          nodeObject.rightChild.value
+        },${moreThan}`
+      );
+    } else if (lessThan > moreThan) {
+      console.log(
+        `Root: ${nodeObject.value} \nHeight: ${
+          lessThan.length + 1
+        } Node(s) \nChain of Nodes: ${nodeObject.value},${
+          nodeObject.leftChild.value
+        },${lessThan}`
+      );
+    }
+  }
 
   depth() {}
   isBalanced() {}
@@ -207,9 +260,10 @@ tree.insert(9);
 tree.insert(2.5);
 tree.insert(12);
 tree.delete(1);
-// prettyPrint(tree.root);
+prettyPrint(tree.root);
 // tree.find(3);
 // tree.levelOrder();
 // tree.inOrder();
 // tree.preOrder();
 // tree.postOrder();
+console.log(tree.height(9));
