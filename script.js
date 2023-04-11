@@ -6,9 +6,6 @@ class Tree {
   insert(value) {
     let currentRoot = this.root;
     //doesn't allow duplicates
-    if (value === currentRoot.value) {
-      return null;
-    }
 
     while (currentRoot.leftChild !== null || currentRoot.rightChild !== null) {
       if (value < currentRoot.value) {
@@ -20,6 +17,9 @@ class Tree {
         currentRoot.rightChild === null
           ? (currentRoot.rightChild = new Node(value))
           : (currentRoot = currentRoot.rightChild);
+      }
+      if (value === currentRoot.value) {
+        return null;
       }
     }
 
@@ -78,6 +78,31 @@ class Tree {
     }
     console.log(currentRoot);
   }
+
+  levelOrder() {
+    let queue = [];
+    let currentRoot = this.root;
+    queue.push(currentRoot);
+    while (queue.length !== 0) {
+      if (currentRoot.leftChild !== null) {
+        queue.push(currentRoot.leftChild);
+      }
+      if (currentRoot.rightChild !== null) {
+        queue.push(currentRoot.rightChild);
+      }
+      console.log(queue[0].value);
+      queue.shift();
+      currentRoot = queue[0];
+    }
+  }
+
+  inorder() {}
+  preorder() {}
+  postorder() {}
+  height() {}
+  depth() {}
+  isBalanced() {}
+  rebalance() {}
 }
 
 class Node {
@@ -141,4 +166,5 @@ tree.insert(2.5);
 tree.insert(12);
 tree.delete(1);
 prettyPrint(tree.root);
-tree.find(3);
+// tree.find(3);
+// tree.levelOrder();
