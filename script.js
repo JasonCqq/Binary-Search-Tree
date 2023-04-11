@@ -82,7 +82,7 @@ class Tree {
 
   //all utilizes same helper function, nothing special.
   levelOrder() {
-    console.log(`Level Order: ${traverseTree(this.root)}`);
+    return `Level Order: ${traverseTree(this.root)}`;
   }
   inOrder() {
     let currentRoot = this.root;
@@ -91,9 +91,9 @@ class Tree {
 
     leftTree.push(traverseTree(currentRoot.leftChild));
     rightTree.push(traverseTree(currentRoot.rightChild));
-    console.log(`Left Subtree: ${leftTree}`);
-    console.log(`Root: ${this.root.value}`);
-    console.log(`Right Subtree: ${rightTree}`);
+    return `Left Subtree: ${leftTree}
+    Root: ${this.root.value}
+    Right Subtree: ${rightTree}`;
   }
   preOrder() {
     let currentRoot = this.root;
@@ -102,9 +102,9 @@ class Tree {
 
     leftTree.push(traverseTree(currentRoot.leftChild));
     rightTree.push(traverseTree(currentRoot.rightChild));
-    console.log(`Root: ${this.root.value}`);
-    console.log(`Left Subtree: ${leftTree}`);
-    console.log(`Right Subtree: ${rightTree}`);
+    return `Root: ${this.root.value}
+    Left Subtree: ${leftTree}
+    Right Subtree: ${rightTree}`;
   }
   postOrder() {
     let currentRoot = this.root;
@@ -113,9 +113,9 @@ class Tree {
 
     leftTree.push(traverseTree(currentRoot.leftChild));
     rightTree.push(traverseTree(currentRoot.rightChild));
-    console.log(`Left Subtree: ${leftTree}`);
-    console.log(`Right Subtree: ${rightTree}`);
-    console.log(`Root: ${this.root.value}`);
+    return `Left Subtree: ${leftTree}
+    Right Subtree: ${rightTree}
+    Root: ${this.root.value}`;
   }
 
   height(node) {
@@ -145,12 +145,7 @@ class Tree {
     let lessThan;
     let moreThan;
 
-    //make sure to do case for equal
-    if (left && right && left.length === right.length) {
-      console.log(
-        `Heights of both trees are the same! \nRoot: ${nodeObject.value}\nHeight: ${left.length} Node(s)\nChain of Left: ${nodeObject.value},${left}\nChain of Right: ${nodeObject.value},${right}`
-      );
-    } else if (left && right && left.length < right.length) {
+    if (left && right && left.length < right.length) {
       right.shift();
       let rightRoot = nodeObject.rightChild;
       lessThan = right.filter((num) => num < rightRoot.value);
@@ -160,24 +155,22 @@ class Tree {
       let leftRoot = nodeObject.leftChild;
       lessThan = left.filter((num) => num < leftRoot.value);
       moreThan = left.filter((num) => num > leftRoot.value);
+    } else if (left && right && left.length === right.length) {
+      return `Heights of both trees are the same! Root: ${nodeObject.value} Height: ${left.length} Node(s) Chain of Left: ${nodeObject.value},${left} Chain of Right: ${nodeObject.value},${right}`;
     }
 
-    if (lessThan < moreThan) {
-      console.log(
-        `Root: ${nodeObject.value} \nHeight: ${
-          moreThan.length + 1
-        } Node(s) \nChain of Nodes: ${nodeObject.value},${
-          nodeObject.rightChild.value
-        },${moreThan}`
-      );
-    } else if (lessThan > moreThan) {
-      console.log(
-        `Root: ${nodeObject.value} \nHeight: ${
-          lessThan.length + 1
-        } Node(s) \nChain of Nodes: ${nodeObject.value},${
-          nodeObject.leftChild.value
-        },${lessThan}`
-      );
+    if (lessThan.length < moreThan.length) {
+      return `Root: ${nodeObject.value} \nHeight: ${
+        moreThan.length + 1
+      } Node(s) \nChain of Nodes: ${nodeObject.value},${
+        nodeObject.rightChild.value
+      },${moreThan}`;
+    } else if (lessThan.length > moreThan.length) {
+      return `Root: ${nodeObject.value} \nHeight: ${
+        lessThan.length + 1
+      } Node(s) \nChain of Nodes: ${nodeObject.value},${
+        nodeObject.leftChild.value
+      },${lessThan}`;
     }
   }
 
@@ -185,8 +178,22 @@ class Tree {
     return `Layers away from root: ${this.find(node, "yes")}`;
   }
 
-  //depth is how far the current node is from the root node
-  isBalanced() {}
+  isBalanced() {
+    let array1 = this.height(this.root.leftChild.value).split(" ");
+    let array2 = this.height(this.root.rightChild.value).split(" ");
+    let a = array1[array1.indexOf("Node(s)") - 1];
+    let b = array2[array2.indexOf("Node(s)") - 1];
+    if (
+      Number(a) - Number(b) === -1 ||
+      Number(a) - Number(b) === 1 ||
+      Number(a) - Number(b) === 0
+    ) {
+      return "Balanced Tree";
+    } else {
+      return "Unbalanced Tree";
+    }
+  }
+
   rebalance() {}
 }
 
@@ -198,6 +205,7 @@ class Node {
   }
 }
 
+//helper functions
 //turns an array into a balanced BST
 function buildTree(array, start = 0, end = array.length - 1) {
   //turn it into a balanced binary tree full of Node objects appropriately placed
@@ -213,9 +221,6 @@ function buildTree(array, start = 0, end = array.length - 1) {
   newNode.rightChild = buildTree(array, midPoint + 1, end);
   return newNode;
 }
-
-//helper functions
-
 //remove dupes and sort numbers
 function filterArray(arr) {
   let duplicateFilter = [];
@@ -262,6 +267,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
+//test cases
 const testArray = [2, 2, 2, 1, 3, 5, 6, 2, 7, 5, 6];
 const tree = new Tree(testArray);
 tree.insert(4);
@@ -277,4 +283,5 @@ prettyPrint(tree.root);
 // tree.preOrder();
 // tree.postOrder();
 // console.log(tree.height(9));
-console.log(tree.depth(3));
+// console.log(tree.depth(3));
+console.log(tree.isBalanced());
