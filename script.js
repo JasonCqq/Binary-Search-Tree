@@ -194,7 +194,15 @@ class Tree {
     }
   }
 
-  rebalance() {}
+  rebalance() {
+    if (this.isBalanced() === "Unbalanced Tree") {
+      let array = traverseTree(this.root);
+      prettyPrint(buildTree(array));
+      return "Balanced.";
+    } else {
+      return "Tree already balanced";
+    }
+  }
 }
 
 class Node {
@@ -276,7 +284,7 @@ tree.insert(9);
 tree.insert(2.5);
 tree.insert(12);
 tree.delete(1);
-prettyPrint(tree.root);
+// prettyPrint(tree.root);
 // tree.find(3);
 // tree.levelOrder();
 // tree.inOrder();
@@ -284,4 +292,5 @@ prettyPrint(tree.root);
 // tree.postOrder();
 // console.log(tree.height(9));
 // console.log(tree.depth(3));
-console.log(tree.isBalanced());
+// console.log(tree.isBalanced());
+// console.log(tree.rebalance());
