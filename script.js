@@ -197,8 +197,8 @@ class Tree {
   rebalance() {
     if (this.isBalanced() === "Unbalanced Tree") {
       let array = traverseTree(this.root);
+      console.log("BALANCING TREE");
       prettyPrint(buildTree(array));
-      return "Balanced.";
     } else {
       return "Tree already balanced";
     }
@@ -294,3 +294,27 @@ tree.delete(1);
 // console.log(tree.depth(3));
 // console.log(tree.isBalanced());
 // console.log(tree.rebalance());
+
+//TEST
+// Create a binary search tree from an array of random numbers.
+// You can create a function that returns an array of random numbers every time you call it, if you wish.
+// Confirm that the tree is balanced by calling isBalanced
+// Print out all elements in level, pre, post, and in order
+// Unbalance the tree by adding several numbers > 100
+// Confirm that the tree is unbalanced by calling isBalanced
+// Balance the tree by calling rebalance
+// Confirm that the tree is balanced by calling isBalanced
+// Print out all elements in level, pre, post, and in order
+
+// prettyPrint(tree.root);
+// console.log(tree.isBalanced());
+// console.log(tree.rebalance());
+// tree.insert(213);
+// tree.insert(223);
+// tree.insert(253);
+// prettyPrint(tree.root);
+// console.log(tree.isBalanced());
+// console.log(tree.rebalance());
+
+// Bug: returning undefined bug
+// Things to improve next time: Error Handling, Better comments.
