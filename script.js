@@ -64,14 +64,20 @@ class Tree {
     }
   }
 
-  find(value) {
+  find(value, depth = null) {
     let currentRoot = this.root;
+    let layers = 0;
     while (value !== currentRoot.value) {
       value < currentRoot.value
         ? (currentRoot = currentRoot.leftChild)
         : (currentRoot = currentRoot.rightChild);
+      layers++;
     }
-    return currentRoot;
+    if (depth === null) {
+      return currentRoot;
+    } else if (depth === "yes") {
+      return layers;
+    }
   }
 
   //all utilizes same helper function, nothing special.
@@ -175,7 +181,11 @@ class Tree {
     }
   }
 
-  depth() {}
+  depth(node) {
+    return `Layers away from root: ${this.find(node, "yes")}`;
+  }
+
+  //depth is how far the current node is from the root node
   isBalanced() {}
   rebalance() {}
 }
@@ -266,4 +276,5 @@ prettyPrint(tree.root);
 // tree.inOrder();
 // tree.preOrder();
 // tree.postOrder();
-console.log(tree.height(9));
+// console.log(tree.height(9));
+console.log(tree.depth(3));
