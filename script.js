@@ -6,7 +6,6 @@ class Tree {
   insert(value) {
     let currentRoot = this.root;
     //doesn't allow duplicates
-
     while (currentRoot.leftChild !== null || currentRoot.rightChild !== null) {
       if (value < currentRoot.value) {
         //keeps setting the new root until the root has no left/right child
@@ -22,7 +21,6 @@ class Tree {
         return null;
       }
     }
-
     value < currentRoot.value
       ? (currentRoot.leftChild = new Node(value))
       : (currentRoot.rightChild = new Node(value));
@@ -34,12 +32,10 @@ class Tree {
     let previousRoot = null;
     while (value !== currentRoot.value && currentRoot !== null) {
       previousRoot = currentRoot;
-
       value < currentRoot.value
         ? (currentRoot = currentRoot.leftChild)
         : (currentRoot = currentRoot.rightChild);
     }
-
     //2 children
     if (currentRoot.leftChild !== null && currentRoot.rightChild !== null) {
       let rootToReplace = currentRoot;
@@ -49,7 +45,6 @@ class Tree {
       }
       rootToReplace.value = currentRoot.value;
       rootToReplace.rightChild = currentRoot.rightChild;
-
       //1 children
     } else if (
       currentRoot.leftChild !== null ||
@@ -79,27 +74,54 @@ class Tree {
     console.log(currentRoot);
   }
 
+  //all utilizes same helper function, nothing special.
   levelOrder() {
-    let queue = [];
+    console.log(`Level Order: ${traverseTree(this.root)}`);
+  }
+  inOrder() {
     let currentRoot = this.root;
-    queue.push(currentRoot);
-    while (queue.length !== 0) {
-      if (currentRoot.leftChild !== null) {
-        queue.push(currentRoot.leftChild);
-      }
-      if (currentRoot.rightChild !== null) {
-        queue.push(currentRoot.rightChild);
-      }
-      console.log(queue[0].value);
-      queue.shift();
-      currentRoot = queue[0];
-    }
+    let leftTree = [];
+    let rightTree = [];
+
+    leftTree.push(traverseTree(currentRoot.leftChild));
+    rightTree.push(traverseTree(currentRoot.rightChild));
+    console.log(`Left Subtree: ${leftTree}`);
+    console.log(`Root: ${this.root.value}`);
+    console.log(`Right Subtree: ${rightTree}`);
+  }
+  preOrder() {
+    let currentRoot = this.root;
+    let leftTree = [];
+    let rightTree = [];
+
+    leftTree.push(traverseTree(currentRoot.leftChild));
+    rightTree.push(traverseTree(currentRoot.rightChild));
+    console.log(`Root: ${this.root.value}`);
+    console.log(`Left Subtree: ${leftTree}`);
+    console.log(`Right Subtree: ${rightTree}`);
+  }
+  postOrder() {
+    let currentRoot = this.root;
+    let leftTree = [];
+    let rightTree = [];
+
+    leftTree.push(traverseTree(currentRoot.leftChild));
+    rightTree.push(traverseTree(currentRoot.rightChild));
+    console.log(`Left Subtree: ${leftTree}`);
+    console.log(`Right Subtree: ${rightTree}`);
+    console.log(`Root: ${this.root.value}`);
   }
 
-  inorder() {}
-  preorder() {}
-  postorder() {}
-  height() {}
+  // height(node) {
+  //   let left = [];
+  //   let right = [];
+  //   while (node !== null) {
+  //     left.push(node.leftChild);
+  //     right.push(node.rightChild);
+
+  //   }
+  // }
+
   depth() {}
   isBalanced() {}
   rebalance() {}
@@ -130,6 +152,7 @@ function buildTree(array, start = 0, end = array.length - 1) {
 }
 
 //helper functions
+
 //remove dupes and sort numbers
 function filterArray(arr) {
   let duplicateFilter = [];
@@ -142,6 +165,25 @@ function filterArray(arr) {
     return a - b;
   });
   return sortedArray;
+}
+//traverses all the childs of root parameter
+function traverseTree(root) {
+  let queue = [];
+  let values = [];
+  let currentRoot = root;
+  queue.push(currentRoot);
+  while (queue.length !== 0) {
+    if (currentRoot.leftChild !== null) {
+      queue.push(currentRoot.leftChild);
+    }
+    if (currentRoot.rightChild !== null) {
+      queue.push(currentRoot.rightChild);
+    }
+    values.push(queue[0].value);
+    queue.shift();
+    currentRoot = queue[0];
+  }
+  return values;
 }
 //visualize tree
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -165,6 +207,9 @@ tree.insert(9);
 tree.insert(2.5);
 tree.insert(12);
 tree.delete(1);
-prettyPrint(tree.root);
+// prettyPrint(tree.root);
 // tree.find(3);
 // tree.levelOrder();
+// tree.inOrder();
+// tree.preOrder();
+// tree.postOrder();
